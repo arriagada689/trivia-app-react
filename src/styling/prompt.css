@@ -1,0 +1,56 @@
+.prompt-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border: 2px solid #007BFF;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 20px;
+  }
+  
+  .prompt-container .category-container,
+  .prompt-container .type-container,
+  .prompt-container .amount-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .prompt-container h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  .prompt-container select {
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .prompt-container button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  
+  .prompt-container button:hover {
+    background-color: #0056b3;
+  }

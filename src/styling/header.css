@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    justify-content: center;
+    background-color: #534caf;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    margin-top: 5px;
+  }
+
+.timer {
+    font-size: 20px;
+}
