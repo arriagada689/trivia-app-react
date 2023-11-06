@@ -23,3 +23,22 @@
 .timer {
     font-size: 20px;
 }
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100vh;
+}
+
+.loading {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 200px;
+}
+
+.place-next {
+    display: flex;
+}

@@ -3,6 +3,7 @@ import '../styling/header.css';
 import Prompt from './Prompt';
 import Question from './Question';
 import Results from './Results';
+import LoadingEllipses from './LoadingEllipses';
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -11,6 +12,7 @@ function App() {
   const [questions, setQuestions] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [error, setError] = useState(false);
 
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalTime, setTotalTime] = useState(null);
@@ -21,8 +23,11 @@ function App() {
       .then((data) => {
         setCategories(data.trivia_categories);
       })
-      .catch((error) => console.error(error))
-
+      .catch((error) => {
+        if(error){
+          setError(true);
+        }
+      })
   }, []);
 
   useEffect(() => {
@@ -91,6 +96,10 @@ function App() {
       <header className="header">
         Fun Trivia App
       </header>
+
+      {categories.length === 0 && !error && <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
+
+      {error && <div className='centered-container'><div className='loading'>Error fetching data. Open Trivia Database may be down.</div></div>}
 
       {generateButton && !showResults && 
         <div className="timer-container">
