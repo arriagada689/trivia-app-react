@@ -1,0 +1,70 @@
+.pr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pr-header-container {
+    display: flex;
+}
+.pr-pic-container {
+    display: flex;
+    flex-direction: column;
+}
+.pr-top-label {
+    text-align: center;
+    font-size: 35px;
+    margin-top: 10px;
+}
+
+.pr-top-label .username {
+    color: red; 
+}
+
+.horizontal-bar {
+    height: 2px;
+    border-bottom: 2px solid black;
+    width: 60%;
+}
+
+.pr-section-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px;
+    width: 100%;
+}
+
+.pr-section {
+    border: 2px solid #007BFF;
+    border-radius: 15px;
+    margin-top: 10px;
+    width: 24%;
+    height: fit-content;
+}
+
+.pr-label {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 28px;
+    text-decoration: underline;
+}
+
+.pr-sub-label {
+    margin-left: 3px;
+    font-size: 19px;
+    margin-bottom: 3px;
+}
+
+.pr-sub-label .pr-info {
+    color: red;
+}
+
+.empty-message {
+    padding: 12px;
+    font-size: 17px;
+}
+
+.profile-picture {
+    height: 150px;
+    width: 150px;
+}

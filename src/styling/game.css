@@ -1,0 +1,31 @@
+.game-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.game-label {
+    font-size: 14px;
+}
+
+.game-score {
+    font-size: 24px; 
+    font-weight: bold;
+    margin-right: 18px; 
+}
+
+.vertical-game-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-game-info > div {
+    margin-bottom: 3px; 
+}
+
+.vertical-game-info .game-info {
+    color: red;
+}

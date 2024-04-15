@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
+import { sampleData, singleQuestion, fourQuestions } from '../sample_data';
 import '../styling/header.css';
 import Prompt from './Prompt';
 import Question from './Question';
 import Results from './Results';
 import LoadingEllipses from './LoadingEllipses';
+import Navbar from './Navbar';
+import Register from './Register'
+import Login from './Login'
+import Profile from './Profile'
+import Table from './Table'
+import ProfileBox from './ProfileBox'
+import Leaderboard from './Leaderboard'
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -17,10 +25,20 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalTime, setTotalTime] = useState(null);
 
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const [mainComponent, setMainComponent] = useState('Prompt')
+
+  const [user, setUser] = useState({
+    id: '',
+    username: ''
+  });
+
   useEffect(() => {
     fetch('https://opentdb.com/api_category.php')
       .then((response) => response.json())
       .then((data) => {
+        console.log(data.trivia_categories)
         setCategories(data.trivia_categories);
       })
       .catch((error) => {
@@ -78,6 +96,7 @@ function App() {
     if(userAnswers.length === questions.length){
       setShowResults(true);
       setTotalTime(elapsedTime);
+      setMainComponent('Results')
     }
     setCurrentQuestion(currentQuestion + 1);
   }
@@ -89,31 +108,63 @@ function App() {
     setQuestions(null);
     setShowResults(false);
     setElapsedTime(0); 
+    setMainComponent('Prompt');
+  }
+
+  const handleNavbarClick = (input) => {
+    if(input === 'Register'){
+      setMainComponent('Register')
+    } else if(input === 'Log out'){
+        const updatedUser = {
+          id: '',
+          username: ''
+        };
+        setUser(updatedUser)
+        setLoggedIn(false)
+    } else if(input === 'Log in'){
+        setMainComponent('Log in');
+    } else if(input === 'Profile'){
+        setMainComponent('Profile');
+    } else if(input === 'Prompt'){
+        setMainComponent('Prompt');
+    } else if(input === 'Leaderboard'){
+        setMainComponent('Leaderboard');
+    }
   }
   
   return (
     <div className="App">
-      <header className="header">
-        Fun Trivia App
-      </header>
+      
+      {<Navbar loggedIn={loggedIn} handleNavbarClick={handleNavbarClick}/>}
 
-      {categories.length === 0 && !error && <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
+      {categories.length === 0 && !error && mainComponent === 'Loading' &&
+        <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
 
-      {error && <div className='centered-container'><div className='loading'>Error fetching data. Open Trivia Database may be down.</div></div>}
+      {error && mainComponent === 'Loading' &&
+        <div className='centered-container'><div className='loading'>Error fetching data. Open Trivia Database may be down.</div></div>}
 
-      {generateButton && !showResults && 
+      {generateButton && !showResults && mainComponent === 'Loading' &&
         <div className="timer-container">
           <p className='timer'>Time: {elapsedTime} seconds</p>
         </div>}
 
-      {!generateButton && categories.length > 0 &&
-        <Prompt handleGenerateButton={handleGenerateButton} categories={categories}/>}
+      {mainComponent === 'Register' && <Register setLoggedIn={setLoggedIn} setMainComponent={setMainComponent} setUser={setUser}/>}
+      {mainComponent === 'Log in' && <Login setLoggedIn={setLoggedIn} setMainComponent={setMainComponent} setUser={setUser}/>}
+      {mainComponent === 'Profile' && <Profile user={user}/>}
+      {mainComponent === 'Leaderboard' && <Leaderboard user={user}/>}
+
+      {!generateButton && categories.length > 0 && mainComponent === 'Prompt' &&
+        <div> 
+          {user.username !== '' && <ProfileBox user={user}/>}
+          <Prompt handleGenerateButton={handleGenerateButton} categories={categories}/>
+          <Table />
+        </div> }
 
       {generateButton && !showResults && questions &&
         <Question data={questions[currentQuestion]} questionNumber={currentQuestion + 1} handleAnswerClick={handleAnswerClick}/>}
 
-      {showResults && 
-        <Results startOver={handleStartOver} userAnswers={userAnswers} data={questions} time={totalTime}/>}
+      {showResults && mainComponent === 'Results' &&
+        <Results startOver={handleStartOver} userAnswers={userAnswers} data={questions} time={totalTime} user={user}/>}
 
     </div>
   );

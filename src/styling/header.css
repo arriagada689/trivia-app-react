@@ -16,7 +16,7 @@
 
 .timer-container {
     display: flex;
-    justify-content: center; /* Horizontally center */
+    justify-content: center; 
     margin-top: 5px;
   }
 

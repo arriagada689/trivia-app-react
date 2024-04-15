@@ -1,11 +1,34 @@
 import Correct from "./Correct";
 import Incorrect from "./Incorrect";
 import '../styling/results.css';
+import { useEffect } from "react";
 
-const Results = ({ startOver, userAnswers, data, time }) => {
+const Results = ({ startOver, userAnswers, data, time, user }) => {
     
     const realAnswers = [];
     const resultComponents = [];
+
+    useEffect(() => {
+        if(user.username !== ''){
+            
+            fetch('https://prickle-tasty-thunbergia.glitch.me/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: user.username,
+                    score: calculateScore2(),
+                    category: decodeURIComponent(data[0].category),
+                    timeTaken: formatTime(time),
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data)
+            })
+        }
+    }, [])
     
     const calculateScore = () => {
         for(let i = 0; i < data.length; i++){
