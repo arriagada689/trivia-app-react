@@ -17,8 +17,8 @@ const ProfileBox = ({ user }) => {
             dynamicInfoArray.push(data.total_correct);
             dynamicInfoArray.push(data.total_wrong);
             dynamicInfoArray.push(data.favorite_category);
-            dynamicInfoArray.push(data.longest_streak);
             dynamicInfoArray.push(data.streak);
+            dynamicInfoArray.push(data.longest_streak);
             setInfoArray(dynamicInfoArray);
         })
     }, [])
