@@ -27,7 +27,7 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const [mainComponent, setMainComponent] = useState('Prompt')
+  const [mainComponent, setMainComponent] = useState('Loading')
 
   const [user, setUser] = useState({
     id: '',
@@ -38,8 +38,9 @@ function App() {
     fetch('https://opentdb.com/api_category.php')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.trivia_categories)
+        // console.log(data.trivia_categories)
         setCategories(data.trivia_categories);
+        setMainComponent('Prompt')
       })
       .catch((error) => {
         if(error){
@@ -121,12 +122,13 @@ function App() {
         };
         setUser(updatedUser)
         setLoggedIn(false)
+        setMainComponent('Prompt');
     } else if(input === 'Log in'){
         setMainComponent('Log in');
     } else if(input === 'Profile'){
         setMainComponent('Profile');
     } else if(input === 'Prompt'){
-        setMainComponent('Prompt');
+        //setMainComponent('Prompt');
         handleStartOver();
     } else if(input === 'Leaderboard'){
         setMainComponent('Leaderboard');

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import '../styling/leaderboard.css';
+import LoadingEllipses from './LoadingEllipses';
 
 const initial = [
     { key: 'total_games', label: 'Total Games' },
@@ -33,6 +34,11 @@ const Leaderboard = ({ user }) => {
             // console.log(data)
             setUserData(data)
         })
+        .catch((error) => {
+            if(error){
+              //setError(true);
+            }
+          })
     }, [])
 
     const handleSortingButtonClick = (sortingMetric) => {
@@ -71,72 +77,76 @@ const Leaderboard = ({ user }) => {
     }
     
     return ( 
-        <div className="leaderboard-container">
-            <h1 className="leaderboard-header">Leaderboard</h1>
-            <div className="sorting-button-container">
-                <div className="sorting-metric">Sorting metric:</div>
-                <button 
-                    className={selectedButton === 1 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(1)}>
-                    Total Games
-                </button>
-                <button 
-                    className={selectedButton === 2 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(2)}>
-                    Total Correct
-                </button>
-                <button 
-                    className={selectedButton === 3 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(3)}>
-                    Total Wrong
-                </button>
-                <button 
-                    className={selectedButton === 4 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(4)}>
-                    Overall Average
-                </button>
-                <button 
-                    className={selectedButton === 5 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(5)}>
-                    Current Perfect Score Streak
-                </button>
-                <button 
-                    className={selectedButton === 6 ? 'sorting-button selected' : 'sorting-button'}
-                    onClick={() => handleSortingButtonClick(6)}>
-                    Longest Perfect Score Streak
-                </button>
-            </div>
-            {userData && (
-                <table className="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Username</th>
-                            {columnOrder.map((column, index) => (
-                                <th key={index}>{column.label}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {userData.map((user, index) => (
-                            <tr key={user._id} className={`leaderboard-item ${user.username === loggedInUser ? 'highlight' : ''}`}>
-                                <td className="leaderboard-info">{index + 1}</td>
-                                <td className="leaderboard-info">{truncateString(user.username)}</td>
-                                {columnOrder.map((column, columnIndex) => {
-                                    if(column.key === 'overall_average'){
-                                        return (
-                                            <td key={columnIndex} className="leaderboard-info">{decimalToPercentage(user[column.key])}</td>
-                                        )
-                                    }
-                                    return (
-                                        <td key={columnIndex} className="leaderboard-info">{user[column.key]}</td>
-                                    );
-                                })}
+        <div>
+            {userData && 
+            <div className="leaderboard-container">
+                <h1 className="leaderboard-header">Leaderboard</h1>
+                <div className="sorting-button-container">
+                    <div className="sorting-metric">Sorting metric:</div>
+                    <button 
+                        className={selectedButton === 1 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(1)}>
+                        Total Games
+                    </button>
+                    <button 
+                        className={selectedButton === 2 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(2)}>
+                        Total Correct
+                    </button>
+                    <button 
+                        className={selectedButton === 3 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(3)}>
+                        Total Wrong
+                    </button>
+                    <button 
+                        className={selectedButton === 4 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(4)}>
+                        Overall Average
+                    </button>
+                    <button 
+                        className={selectedButton === 5 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(5)}>
+                        Current Perfect Score Streak
+                    </button>
+                    <button 
+                        className={selectedButton === 6 ? 'sorting-button selected' : 'sorting-button'}
+                        onClick={() => handleSortingButtonClick(6)}>
+                        Longest Perfect Score Streak
+                    </button>
+                </div>
+                {userData && (
+                    <table className="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                {columnOrder.map((column, index) => (
+                                    <th key={index}>{column.label}</th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {userData.map((user, index) => (
+                                <tr key={user._id} className={`leaderboard-item ${user.username === loggedInUser ? 'highlight' : ''}`}>
+                                    <td className="leaderboard-info">{index + 1}</td>
+                                    <td className="leaderboard-info">{truncateString(user.username)}</td>
+                                    {columnOrder.map((column, columnIndex) => {
+                                        if(column.key === 'overall_average'){
+                                            return (
+                                                <td key={columnIndex} className="leaderboard-info">{decimalToPercentage(user[column.key])}</td>
+                                            )
+                                        }
+                                        return (
+                                            <td key={columnIndex} className="leaderboard-info">{user[column.key]}</td>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>}
+            {!userData && <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
         </div>
     );
 }
