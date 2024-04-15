@@ -127,6 +127,7 @@ function App() {
         setMainComponent('Profile');
     } else if(input === 'Prompt'){
         setMainComponent('Prompt');
+        handleStartOver();
     } else if(input === 'Leaderboard'){
         setMainComponent('Leaderboard');
     }
