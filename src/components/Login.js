@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styling/signin.css';
+import LoadingEllipses from './LoadingEllipses';
 
 const Login = ({ setLoggedIn, setMainComponent, setUser }) => {
     const [formData, setFormData] = useState({
@@ -8,6 +9,21 @@ const Login = ({ setLoggedIn, setMainComponent, setUser }) => {
     });
 
     const [statusMessage, setStatusMessage] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        //wake up request for loading feature
+        fetch('https://prickle-tasty-thunbergia.glitch.me/')
+        .then(response => response.json())
+        .then(data => {
+            setLoading(false);
+        })
+        .catch((error) => {
+            if(error){
+                //setError(true);
+            }
+        })
+    }, [])
 
     const handleChange = (event) => {
         setFormData({
@@ -43,41 +59,45 @@ const Login = ({ setLoggedIn, setMainComponent, setUser }) => {
     }
     
     return (  
-        <div className='signin-container'>
-            
-            {statusMessage.length > 0 && <div className={`status-message ${statusMessage === 'Logged in!' ? 'logged-in' : 'error-message'}`}>
-                {statusMessage}
-            </div>}
-            
-            <form onSubmit={handleSignin}>
-            
-                <div className="signin-box">
-                    <div className='signin-label'>Log in</div>
+        <div>
+            {!loading && 
+                <div className='signin-container'>
+                
+                    {statusMessage.length > 0 && <div className={`status-message ${statusMessage === 'Logged in!' ? 'logged-in' : 'error-message'}`}>
+                        {statusMessage}
+                    </div>}
                     
-                    <div className="signin-input-row">
-                        <div className='signin-sub-label'>Username</div>
-                        <div className="horizontalize">
-                            <i className="fa-solid fa-user"></i>
-                            <input type="text" name='username' value={formData.username} onChange={handleChange} autoComplete="new-password" className='signin-input' placeholder='Type your username'/>
+                    <form onSubmit={handleSignin}>
+                    
+                        <div className="signin-box">
+                            <div className='signin-label'>Log in</div>
+                            
+                            <div className="signin-input-row">
+                                <div className='signin-sub-label'>Username</div>
+                                <div className="horizontalize">
+                                    <i className="fa-solid fa-user"></i>
+                                    <input type="text" name='username' value={formData.username} onChange={handleChange} autoComplete="new-password" className='signin-input' placeholder='Type your username'/>
+                                </div>
+                                <div className="div-separator"></div>
+                            </div>
+
+                            <div className="signin-input-row">
+                                <div className='signin-sub-label'>Password</div>
+                                <div className="horizontalize">
+                                    <i className="fa-solid fa-lock"></i>
+                                    <input type="password" name='password' value={formData.password} onChange={handleChange} autoComplete="new-password" className='signin-input' placeholder='Type your password'/>
+                                </div>
+                                <div className="div-separator"></div>
+                            </div>
+
+                            <div className="center-input">
+                                <input type="submit" value="Log in" id='signin-submit-button'/>
+                            </div>
                         </div>
-                        <div className="div-separator"></div>
-                    </div>
+                    </form>
 
-                    <div className="signin-input-row">
-                        <div className='signin-sub-label'>Password</div>
-                        <div className="horizontalize">
-                            <i className="fa-solid fa-lock"></i>
-                            <input type="password" name='password' value={formData.password} onChange={handleChange} autoComplete="new-password" className='signin-input' placeholder='Type your password'/>
-                        </div>
-                        <div className="div-separator"></div>
-                    </div>
-
-                    <div className="center-input">
-                        <input type="submit" value="Log in" id='signin-submit-button'/>
-                    </div>
-                </div>
-            </form>
-
+                </div>}
+            {loading && <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
         </div>
     );
 }

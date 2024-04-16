@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styling/signin.css';
 import '../styling/register.css';
+import LoadingEllipses from './LoadingEllipses';
 
 const Register = ({ setLoggedIn, setMainComponent, setUser }) => {
     const [formData, setFormData] = useState({
@@ -9,6 +10,21 @@ const Register = ({ setLoggedIn, setMainComponent, setUser }) => {
         confirm_password: ''
     });
     const [statusMessage, setStatusMessage] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        //wake up request for loading feature
+        fetch('https://prickle-tasty-thunbergia.glitch.me/')
+        .then(response => response.json())
+        .then(data => {
+            setLoading(false);
+        })
+        .catch((error) => {
+            if(error){
+                //setError(true);
+            }
+        })
+    }, [])
 
     const handleChange = (event) => {
         setFormData({
@@ -44,53 +60,57 @@ const Register = ({ setLoggedIn, setMainComponent, setUser }) => {
     }
 
     return ( 
-        <div className='signin-container'>
-            {statusMessage.length > 0 && <div className={`status-message ${statusMessage === 'Registered!' ? 'logged-in' : 'error-message'}`}>{statusMessage}</div>}
-            
-            <form onSubmit={handleSubmit}>
-                <div className="signin-box">
-                    <div className="signin-label">Register an account</div>
+        <div>
+            {!loading && 
+            <div className='signin-container'>
+                {statusMessage.length > 0 && <div className={`status-message ${statusMessage === 'Registered!' ? 'logged-in' : 'error-message'}`}>{statusMessage}</div>}
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="signin-box">
+                        <div className="signin-label">Register an account</div>
 
-                    <div className="signin-input-row">
-                        <div className="signin-sub-label">Enter a username</div>
-                        <ul>
-                            <li>150 characters or fewer.</li>
-                            <li>Letters and digits only.</li>
-                        </ul>
-                        <div className="horizontalize">
-                            <i className="fa-solid fa-user"></i>
-                            <input type="text" name="username" className='signin-input' value={formData.username} onChange={handleChange} autoComplete="username" placeholder='Type a username'/>
+                        <div className="signin-input-row">
+                            <div className="signin-sub-label">Enter a username</div>
+                            <ul>
+                                <li>150 characters or fewer.</li>
+                                <li>Letters and digits only.</li>
+                            </ul>
+                            <div className="horizontalize">
+                                <i className="fa-solid fa-user"></i>
+                                <input type="text" name="username" className='signin-input' value={formData.username} onChange={handleChange} autoComplete="username" placeholder='Type a username'/>
+                            </div>
+                            <div className="div-separator"></div>
                         </div>
-                        <div className="div-separator"></div>
-                    </div>
 
-                    <div className="signin-input-row">
-                        <div className="signin-sub-label">Enter a password</div>
-                        <ul>
-                            <li>Must be at least 4 characters.</li>
-                            <li>Cannot be entirely numeric.</li>
-                        </ul>
-                        <div className="horizontalize">
-                            <i className="fa-solid fa-lock"></i>
-                            <input type="password" name="password" className='signin-input' value={formData.password} onChange={handleChange} autoComplete="new-password" placeholder='Type a password'/>
+                        <div className="signin-input-row">
+                            <div className="signin-sub-label">Enter a password</div>
+                            <ul>
+                                <li>Must be at least 4 characters.</li>
+                                <li>Cannot be entirely numeric.</li>
+                            </ul>
+                            <div className="horizontalize">
+                                <i className="fa-solid fa-lock"></i>
+                                <input type="password" name="password" className='signin-input' value={formData.password} onChange={handleChange} autoComplete="new-password" placeholder='Type a password'/>
+                            </div>
+                            <div className="div-separator"></div>
                         </div>
-                        <div className="div-separator"></div>
-                    </div>
 
-                    <div className="signin-input-row">
-                        <div className="signin-sub-label">Confirm password</div>
-                        <div className="horizontalize">
-                            <i className="fa-solid fa-lock"></i>
-                            <input type="password" name="confirm_password" className='signin-input' value={formData.confirm_password} onChange={handleChange} autoComplete="new-password" placeholder='Confirm password'/>
+                        <div className="signin-input-row">
+                            <div className="signin-sub-label">Confirm password</div>
+                            <div className="horizontalize">
+                                <i className="fa-solid fa-lock"></i>
+                                <input type="password" name="confirm_password" className='signin-input' value={formData.confirm_password} onChange={handleChange} autoComplete="new-password" placeholder='Confirm password'/>
+                            </div>
+                            <div className="div-separator"></div>
                         </div>
-                        <div className="div-separator"></div>
+                        
+                        <div className="center-input">
+                            <input type="submit" value="Register" id='signin-submit-button'/>
+                        </div>
                     </div>
-                    
-                    <div className="center-input">
-                        <input type="submit" value="Register" id='signin-submit-button'/>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>}
+            {loading && <div className='centered-container'><div className='loading place-next'>Loading<LoadingEllipses /></div></div>}
         </div>
     );
 }

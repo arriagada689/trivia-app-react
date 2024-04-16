@@ -4,7 +4,7 @@ import '../styling/navbar.css'
 const Navbar = ({ loggedIn, handleNavbarClick }) => {
     return (  
         <div className="navbar">
-            <button className='nav-logo' onClick={() => handleNavbarClick('Prompt')}><div className="navbar-text">Trivia Game App</div></button>
+            <button className='nav-logo' onClick={() => handleNavbarClick('Prompt')}><div className="navbar-text">Trivia Web App</div></button>
             {loggedIn && <div className='nav-button-container'>
                 <button className="nav-button" onClick={() => handleNavbarClick('Profile')}>Profile</button>
                 <button className="nav-button" onClick={() => handleNavbarClick('Log out')}>Log out</button>
